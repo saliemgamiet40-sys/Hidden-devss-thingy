@@ -1,0 +1,206 @@
+local plr = game:GetService("Players").LocalPlayer
+local ms = plr:GetMouse()
+local handler = require(game.ReplicatedStorage.Modules.Cids_Stats.Handler)
+local remote = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability1")
+local remote2 = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability2")
+local remote3 = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability3")
+local remote4 = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability4")
+local remote5 = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability5")
+local cooldownRemote5 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown5")
+local cooldownRemote4 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown4")
+local cooldownRemote3 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown3")
+local cooldownRemote2 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown2")
+local cooldownRemote1 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown1")
+
+local animation = Instance.new("Animation")
+animation.AnimationId = "rbxassetid://104881133798551"
+
+local char = plr.Character or plr.CharacterAdded:Wait()
+local ups = game:GetService("UserInputService")
+
+
+local cooldowns = {
+	[5] = false,
+	[4] = false,
+	[3] = false,
+	[2] = false,
+	[1] = false
+}
+
+cooldownRemote5.OnClientEvent:Connect(function(timeLeft)
+	local gui = plr.PlayerGui:WaitForChild("CoolDownGui").CoolDowns
+	local cooldownLabel = gui.CoolDown5
+	cooldownLabel.Visible = timeLeft > 0
+	cooldownLabel.Text = "Cooldown: "..timeLeft.." {"..handler.MoveNames.Move5 .."}"
+	cooldownLabel.Cooldown.Visible = false
+	cooldowns[5] = timeLeft > 0
+	print("Move5 cooldown:", timeLeft)
+end)
+
+cooldownRemote4.OnClientEvent:Connect(function(timeLeft)
+	local gui = plr.PlayerGui:WaitForChild("CoolDownGui").CoolDowns
+	local cooldownLabel = gui.CoolDown4
+	cooldownLabel.Visible = timeLeft > 0
+	cooldownLabel.Text = "Cooldown: "..timeLeft.." {"..handler.MoveNames.Move4 .."}"
+	cooldownLabel.Cooldown.Visible = false
+	cooldowns[4] = timeLeft > 0
+	print("Move4 cooldown:", timeLeft)
+end)
+
+cooldownRemote3.OnClientEvent:Connect(function(timeLeft)
+	local gui = plr.PlayerGui:WaitForChild("CoolDownGui").CoolDowns
+	local cooldownLabel = gui.CoolDown3
+	cooldownLabel.Visible = timeLeft > 0
+	cooldownLabel.Text = "Cooldown: "..timeLeft.." {"..handler.MoveNames.Move3 .."}"
+	cooldownLabel.Cooldown.Visible = false
+	cooldowns[3] = timeLeft > 0
+	print("Move3 cooldown:", timeLeft)
+end)
+
+cooldownRemote2.OnClientEvent:Connect(function(timeLeft)
+	local gui = plr.PlayerGui:WaitForChild("CoolDownGui").CoolDowns
+	local cooldownLabel = gui.CoolDown2
+	cooldownLabel.Visible = timeLeft > 0
+	cooldownLabel.Text = "Cooldown: "..timeLeft.." {"..handler.MoveNames.Move2 .."}"
+	cooldownLabel.Cooldown.Visible = false
+	cooldowns[2] = timeLeft > 0
+	print("Move2 cooldown:", timeLeft)
+end)
+
+cooldownRemote1.OnClientEvent:Connect(function(timeLeft)
+	local gui = plr.PlayerGui:WaitForChild("CoolDownGui").CoolDowns
+	local cooldownLabel = gui.CoolDown1
+	cooldownLabel.Visible = timeLeft > 0
+	cooldownLabel.Text = "Cooldown: "..timeLeft.." {"..handler.MoveNames.Move1 .."}"
+	cooldownLabel.Cooldown.Visible = false
+	cooldowns[1] = timeLeft > 0
+	print("Move1 cooldown:", timeLeft)
+end)
+
+ups.InputBegan:Connect(function(inp, proc)
+	if proc then return end
+	if inp.KeyCode == Enum.KeyCode.Four then
+		if cooldowns[5] then return end
+
+		local camera = workspace.CurrentCamera
+		local rayOrigin = camera.CFrame.Position
+		local rayDirection = (ms.Hit.p - rayOrigin).Unit * 8
+
+		local raycastParams = RaycastParams.new()
+		raycastParams.FilterDescendantsInstances = {char}
+		raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+		local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+
+		if result then
+			remote5:FireServer(result and result.Instance or nil, animation.AnimationId)
+		end
+	end
+end)
+
+ups.InputBegan:Connect(function(inp, proc)
+	if proc then return end
+	if inp.KeyCode == Enum.KeyCode.Five then
+		if cooldowns[5] then return end
+
+		local camera = workspace.CurrentCamera
+		local rayOrigin = camera.CFrame.Position
+		local rayDirection = (ms.Hit.p - rayOrigin).Unit * 75
+
+		local raycastParams = RaycastParams.new()
+		raycastParams.FilterDescendantsInstances = {char}
+		raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+		local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+
+		if result then
+			remote5:FireServer(result and result.Instance or nil, animation.AnimationId)
+		end
+	end
+end)
+
+ups.InputBegan:Connect(function(inp, proc)
+	if proc then return end
+	if inp.KeyCode == Enum.KeyCode.Four then
+		if cooldowns[4] then return end
+
+		local camera = workspace.CurrentCamera
+		local rayOrigin = camera.CFrame.Position
+		local rayDirection = (ms.Hit.p - rayOrigin).Unit * 100
+
+		local raycastParams = RaycastParams.new()
+		raycastParams.FilterDescendantsInstances = {char}
+		raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+		local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+
+		if result then
+			remote4:FireServer(result and result.Instance or nil, animation.AnimationId)
+		end
+	end
+end)
+
+
+ups.InputBegan:Connect(function(inp, proc)
+	if proc then return end
+	if inp.KeyCode == Enum.KeyCode.Three then
+		if cooldowns[3] then return end
+
+		local camera = workspace.CurrentCamera
+		local rayOrigin = camera.CFrame.Position
+		local rayDirection = (ms.Hit.p - rayOrigin).Unit * 100
+
+		local raycastParams = RaycastParams.new()
+		raycastParams.FilterDescendantsInstances = {char}
+		raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+		local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+
+		if result then
+			remote3:FireServer(result and result.Instance or nil, animation.AnimationId)
+		end
+	end
+end)
+
+ups.InputBegan:Connect(function(inp, proc)
+	if proc then return end
+	if inp.KeyCode == Enum.KeyCode.Two then
+		if cooldowns[2] then return end
+
+		local camera = workspace.CurrentCamera
+		local rayOrigin = camera.CFrame.Position
+		local rayDirection = (ms.Hit.p - rayOrigin).Unit * 75
+
+		local raycastParams = RaycastParams.new()
+		raycastParams.FilterDescendantsInstances = {char}
+		raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+		local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+
+		if result then
+			remote2:FireServer(result and result.Instance or nil, animation.AnimationId)
+		end
+	end
+end)
+
+ups.InputBegan:Connect(function(inp, proc)
+	if proc then return end
+	if inp.KeyCode == Enum.KeyCode.One then
+		if cooldowns[1] then return end
+
+		local camera = workspace.CurrentCamera
+		local rayOrigin = camera.CFrame.Position
+		local rayDirection = (ms.Hit.p - rayOrigin).Unit * 100
+
+		local raycastParams = RaycastParams.new()
+		raycastParams.FilterDescendantsInstances = {char}
+		raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+		local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+
+		if result then
+			remote:FireServer(result and result.Instance or nil, animation.AnimationId)
+		end
+	end
+end)
+

@@ -1,0 +1,81 @@
+```lua
+local CoolDownHandler = require(game.ReplicatedStorage.Modules.Cids_Stats.Handler)
+local MoveHandler4 = require(game.ReplicatedStorage.Modules["Cids Moveset"].MoveHandler4)
+
+local AbilityEvent = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability1")
+local AbilityEvent2 = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability2")
+local AbilityEvent3 = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability3")
+local AbilityEvent4 = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability4")
+local AbilityEvent5 = game.ReplicatedStorage.Remotes.AbilityRemotes:WaitForChild("Ability5")
+local CooldownRemtoe = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown")
+local CooldownRemote1 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown1")
+local CooldownRemote2 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown2")
+local CooldownRemote3 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown3")
+local CooldownRemote4 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown4")
+local CooldownRemote5 = game.ReplicatedStorage.Remotes.CooldownRemotes:WaitForChild("Cooldown5")
+
+local playerCooldowns = {}
+
+
+
+local function isOnCooldown(plr, moveId)
+	local now = os.clock()
+	playerCooldowns[plr.UserId] = playerCooldowns[plr.UserId] or {}
+	local moveCooldown = playerCooldowns[plr.UserId][moveId]
+
+	return moveCooldown and moveCooldown > now
+end
+
+local function setCooldown(plr, moveId, duration, cooldownRemote)
+	playerCooldowns[plr.UserId] = playerCooldowns[plr.UserId] or {}
+	local expireTime = os.clock() + duration
+	playerCooldowns[plr.UserId][moveId] = expireTime
+
+	task.spawn(function()
+		for i = duration, 0, -1 do
+			cooldownRemote:FireClient(plr, i)
+			task.wait(1)
+		end
+	end)
+end
+
+AbilityEvent5.OnServerEvent:Connect(function(plr, hitPart, animId)
+	if not isOnCooldown(plr, 5) then
+		MoveHandler4.Move5(plr, hitPart, animId)
+		setCooldown(plr, 5, CoolDownHandler.MoveCooldowns.Move5, CooldownRemote5)
+	end
+end)
+
+AbilityEvent4.OnServerEvent:Connect(function(plr, hitPart, animId)
+	if not isOnCooldown(plr, 4) then
+		MoveHandler4.Move4(plr, hitPart, animId)
+		setCooldown(plr, 4, CoolDownHandler.MoveCooldowns.Move4, CooldownRemote4)
+	end
+end)
+
+AbilityEvent3.OnServerEvent:Connect(function(plr, hitPart, animId)
+	if not isOnCooldown(plr, 3) then
+		MoveHandler4.Move3(plr, hitPart, animId)
+		setCooldown(plr, 3, CoolDownHandler.MoveCooldowns.Move3, CooldownRemote3)
+	end
+end)
+
+AbilityEvent2.OnServerEvent:Connect(function(plr, hitPart, animId)
+	if not isOnCooldown(plr, 2) then
+		MoveHandler4.Move2(plr, hitPart, animId)
+		setCooldown(plr, 2, CoolDownHandler.MoveCooldowns.Move2, CooldownRemote2)
+	end
+end)
+
+AbilityEvent.OnServerEvent:Connect(function(plr, hitPart, animId)
+	if not isOnCooldown(plr, 1) then
+		MoveHandler4.Move1(plr, hitPart, animId)
+		setCooldown(plr, 1, CoolDownHandler.MoveCooldowns.Move1, CooldownRemote1)
+	end
+end)
+
+game.Players.PlayerRemoving:Connect(function(plr)
+	playerCooldowns[plr.UserId] = nil
+end)
+
+```
